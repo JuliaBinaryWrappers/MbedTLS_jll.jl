@@ -34,7 +34,7 @@ artifacts = Pkg.Artifacts.load_artifacts_toml(artifacts_toml; pkg_uuid=UUID("c8f
 platforms = [Pkg.Artifacts.unpack_platform(e, "MbedTLS", artifacts_toml) for e in artifacts["MbedTLS"]]
 
 # Filter platforms based on what wrappers we've generated on-disk
-platforms = filter(p -> isfile(joinpath(@__DIR__, "wrappers", triplet(p) * ".jl")), platforms)
+filter!(p -> isfile(joinpath(@__DIR__, "wrappers", replace(triplet(p), "armv7l-" => "arm-") * ".jl")), platforms)
 
 # From the available options, choose the best platform
 best_platform = select_platform(Dict(p => triplet(p) for p in platforms))
@@ -44,7 +44,7 @@ if best_platform === nothing
     @debug("Unable to load MbedTLS; unsupported platform $(triplet(platform_key_abi()))")
 else
     # Load the appropriate wrapper
-    include(joinpath(@__DIR__, "wrappers", "$(best_platform).jl"))
+    include(joinpath(@__DIR__, "wrappers", "$(replace(best_platform,"armv7l-" => "arm-")).jl"))
 end
 
 end  # module MbedTLS_jll
