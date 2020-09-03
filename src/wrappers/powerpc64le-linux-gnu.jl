@@ -49,33 +49,36 @@ libmbedx509_handle = C_NULL
 const libmbedx509 = "libmbedx509.so.0"
 
 
+# Inform that the wrapper is available for this platform
+wrapper_available = true
+
 """
 Open all libraries
 """
 function __init__()
-    global artifact_dir = abspath(artifact"MbedTLS")
+    # This either calls `@artifact_str()`, or returns a constant string if we're overridden.
+    global artifact_dir = find_artifact_dir()
 
-    # Initialize PATH and LIBPATH environment variable listings
     global PATH_list, LIBPATH_list
     global libmbedcrypto_path = normpath(joinpath(artifact_dir, libmbedcrypto_splitpath...))
 
     # Manually `dlopen()` this right now so that future invocations
     # of `ccall` with its `SONAME` will find this path immediately.
-    global libmbedcrypto_handle = dlopen(libmbedcrypto_path)
+    global libmbedcrypto_handle = dlopen(libmbedcrypto_path, RTLD_LAZY | RTLD_DEEPBIND)
     push!(LIBPATH_list, dirname(libmbedcrypto_path))
 
     global libmbedtls_path = normpath(joinpath(artifact_dir, libmbedtls_splitpath...))
 
     # Manually `dlopen()` this right now so that future invocations
     # of `ccall` with its `SONAME` will find this path immediately.
-    global libmbedtls_handle = dlopen(libmbedtls_path)
+    global libmbedtls_handle = dlopen(libmbedtls_path, RTLD_LAZY | RTLD_DEEPBIND)
     push!(LIBPATH_list, dirname(libmbedtls_path))
 
     global libmbedx509_path = normpath(joinpath(artifact_dir, libmbedx509_splitpath...))
 
     # Manually `dlopen()` this right now so that future invocations
     # of `ccall` with its `SONAME` will find this path immediately.
-    global libmbedx509_handle = dlopen(libmbedx509_path)
+    global libmbedx509_handle = dlopen(libmbedx509_path, RTLD_LAZY | RTLD_DEEPBIND)
     push!(LIBPATH_list, dirname(libmbedx509_path))
 
     # Filter out duplicate and empty entries in our PATH and LIBPATH entries
@@ -86,4 +89,3 @@ function __init__()
 
     
 end  # __init__()
-
