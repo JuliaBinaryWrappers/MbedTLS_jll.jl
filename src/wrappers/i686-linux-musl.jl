@@ -2,9 +2,9 @@
 export libmbedcrypto, libmbedtls, libmbedx509
 
 JLLWrappers.@generate_wrapper_header("MbedTLS")
-JLLWrappers.@declare_library_product(libmbedcrypto, "libmbedcrypto.so.3")
-JLLWrappers.@declare_library_product(libmbedtls, "libmbedtls.so.12")
-JLLWrappers.@declare_library_product(libmbedx509, "libmbedx509.so.0")
+JLLWrappers.@declare_library_product(libmbedcrypto, "libmbedcrypto.so.5")
+JLLWrappers.@declare_library_product(libmbedtls, "libmbedtls.so.13")
+JLLWrappers.@declare_library_product(libmbedx509, "libmbedx509.so.1")
 function __init__()
     JLLWrappers.@generate_init_header()
     JLLWrappers.@init_library_product(
