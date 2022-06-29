@@ -9,7 +9,7 @@ function __init__()
     JLLWrappers.@generate_init_header()
     JLLWrappers.@init_library_product(
         libmbedcrypto,
-        "lib/libmbedcrypto.2.25.0.dylib",
+        "lib/libmbedcrypto.2.26.0.dylib",
         RTLD_LAZY | RTLD_DEEPBIND,
     )
 
